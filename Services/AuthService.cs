@@ -2,8 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using policy_management.DTOs;
 using policy_management.Entities;
 using policy_management.Repositories;
-using policy_management.Utilities;
 using policy_management.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
 
 namespace policy_management.Services
 {
@@ -27,19 +28,19 @@ namespace policy_management.Services
                 throw new ArgumentException("Email already exists");
             }
 
-            // Hash password
-            var hashedPassword = PasswordHasher.HashPassword(registerDto.Password);
-
             // Create user
             var user = new User
             {
                 Username = registerDto.Username,
                 Email = registerDto.Email,
-                PasswordHash = hashedPassword,
                 Role = registerDto.Role,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
+
+            // Hash password
+            var hasher = new PasswordHasher<RegisterDTO>();
+            user.PasswordHash = hasher.HashPassword(registerDto, registerDto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -68,7 +69,8 @@ namespace policy_management.Services
             }
 
             // Check password
-            if (!PasswordHasher.VerifyPassword(loginDto.Password, user.PasswordHash))
+            var hasher = new PasswordHasher<User>();
+            if (hasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password) == PasswordVerificationResult.Failed)
             {
                 throw new UnauthorizedAccessException("Invalid email or password");
             }

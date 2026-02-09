@@ -46,3 +46,4 @@ C:\Users\Rishitha\Desktop\capstone_project\policy_management\bin\Debug\net10.0\M
 C:\Users\Rishitha\Desktop\capstone_project\policy_management\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Rishitha\Desktop\capstone_project\policy_management\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Rishitha\Desktop\capstone_project\policy_management\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Rishitha\Desktop\capstone_project\policy_management\obj\Debug\net10.0\policy_management.sourcelink.json

@@ -3,7 +3,6 @@ using policy_management.Services;
 using policy_management.Repositories;
 using policy_management.DTOs;
 using Microsoft.AspNetCore.Identity;
-using policy_management.Utilities;
 namespace policy_management.Services
 {
     public class UserService : IUsersService
@@ -25,8 +24,8 @@ namespace policy_management.Services
         }
         public async Task<User> CreateUserAsync(UserDTO user)
         {
-            var hashedPassword = PasswordHasher.HashPassword(user.password_hash);
-            user.password_hash = hashedPassword;
+            var hasher = new PasswordHasher<UserDTO>();
+            user.password_hash = hasher.HashPassword(user, user.password_hash);
             return await _usersRepository.CreateUserAsync(user);
         }
         public async Task<User> UpdateUserAsync(User user)
